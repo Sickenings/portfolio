@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Jorge Bozo | Código y Disciplina</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#ffdad4",
+                        "primary-container": "#d4af37",
+                        "secondary-fixed-dim": "#ffb4a8",
+                        "tertiary-container": "#97b0ff",
+                        "surface-tint": "#e9c349",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary-container": "#5c0000",
+                        "on-primary-container": "#554300",
+                        "on-surface-variant": "#d0c5af",
+                        "on-background": "#e5e2e1",
+                        "tertiary": "#bfcdff",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "inverse-on-surface": "#313030",
+                        "on-primary-fixed": "#241a00",
+                        "primary-fixed": "#ffe088",
+                        "on-secondary-fixed-variant": "#930100",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-bright": "#393939",
+                        "on-tertiary": "#082b72",
+                        "on-secondary": "#690100",
+                        "surface-variant": "#353535",
+                        "primary": "#f2ca50",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed-dim": "#e9c349",
+                        "outline-variant": "#4d4635",
+                        "background": "#131313",
+                        "on-tertiary-container": "#254188",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1c1b1b",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#00174b",
+                        "surface-container-highest": "#353535",
+                        "on-primary-fixed-variant": "#574500",
+                        "surface-container": "#20201f",
+                        "on-secondary-fixed": "#410000",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "secondary-container": "#ff5540",
+                        "on-primary": "#3c2f00",
+                        "surface-container-high": "#2a2a2a",
+                        "outline": "#99907c",
+                        "surface-dim": "#131313",
+                        "secondary": "#ffb4a8",
+                        "inverse-primary": "#735c00"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0rem",
+                        "lg": "0rem",
+                        "xl": "0rem",
+                        "full": "0rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Space Grotesk", "monospace"],
+                        "label": ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: #131313;
+            color: theme('colors.on-surface');
+            font-family: theme('fontFamily.body');
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        /* Prevent margin collapse between sections */
+        section {
+            display: block;
+            position: relative;
+            background-color: #131313;
+        }
+
+        nav, footer {
+            display: block;
+        }
+        
+        /* Noise Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            z-index: 50;
+        }
+
+        .tatami-pattern {
+            background-image: linear-gradient(rgba(212, 175, 55, 0.07) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(212, 175, 55, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: local;
+        }
+
+        .ghost-border {
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .ghost-border-b {
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .glass-panel {
+            background-color: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        
+        .code-font {
+            font-family: 'Space Grotesk', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        .editorial-punch {
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+        }
+        
+        .ambient-shadow:hover {
+            box-shadow: 0 20px 40px -10px rgba(229, 226, 225, 0.05), 0 0 20px rgba(242, 202, 80, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-secondary-container selection:text-on-secondary">
+
+    <!-- TopNavBar Shared Component -->
+    <nav class="docked full-width top-0 z-50 sticky bg-[#131313]/95 border-b-2 border-primary-container/20 backdrop-blur-xl">
+        <div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+            <div class="text-2xl font-black tracking-tighter text-[#D4AF37] font-['Space_Grotesk'] uppercase">
+                JORGE BOZO <span class="text-[#FF5540]">|</span> DEV
+            </div>
+            <div class="hidden md:flex gap-8 items-center">
+                <a id="nav-tatami" class="text-[#e5e2e1] hover:text-[#D4AF37] transition-colors font-['Space_Grotesk'] font-bold uppercase tracking-tighter text-sm hover:bg-[#D4AF37] hover:text-[#131313] transition-all duration-300" href="#tatami">Tatami</a>
+                <a id="nav-arsenal" class="text-[#e5e2e1] hover:text-[#D4AF37] transition-colors font-['Space_Grotesk'] font-bold uppercase tracking-tighter text-sm hover:bg-[#D4AF37] hover:text-[#131313] transition-all duration-300" href="#arsenal">Arsenal</a>
+                <a id="nav-record" class="text-[#e5e2e1] hover:text-[#D4AF37] transition-colors font-['Space_Grotesk'] font-bold uppercase tracking-tighter text-sm hover:bg-[#D4AF37] hover:text-[#131313] transition-all duration-300" href="#record">Récord</a>
+                <a id="nav-contact" class="text-[#e5e2e1] hover:text-[#D4AF37] transition-colors font-['Space_Grotesk'] font-bold uppercase tracking-tighter text-sm hover:bg-[#D4AF37] hover:text-[#131313] transition-all duration-300" href="#contacto">Contacto</a>
+            </div>
+            <!-- Language Toggle -->
+            <button id="lang-toggle" onclick="toggleLang()" class="hidden md:flex items-center gap-2 border-2 border-surface-variant hover:border-[#D4AF37] px-4 py-2 transition-all duration-300 code-font text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-[#D4AF37] group" title="Switch language">
+                <span id="lang-flag" class="text-base leading-none">🇻🇪</span>
+                <span id="lang-label" class="tracking-widest">ES</span>
+                <span class="material-symbols-outlined text-sm opacity-50 group-hover:opacity-100 transition-opacity">translate</span>
+            </button>
+            <a id="nav-cta" href="#contacto" class="hidden md:block bg-primary-container text-on-primary-container px-6 py-3 font-headline font-bold uppercase tracking-tighter text-sm hover:bg-primary-fixed border-2 border-transparent hover:border-primary-container transition-colors duration-300 scale-95 transition-transform duration-200 active:bg-[#FF5540]">
+                CONTACT ME
+            </a>
+            <button class="md:hidden text-primary-container">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] flex items-center overflow-hidden bg-surface tatami-pattern border-b-2 border-primary-container/20">
+        <div class="absolute inset-0 z-0 flex items-center justify-center opacity-40">
+            <svg class="absolute inset-0 w-full h-full text-primary-container/30" preserveaspectratio="xMidYMid slice" viewbox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                <g class="mix-blend-screen" fill="none" stroke="currentColor">
+                    <path d="M 200 0 L 200 1000 M 500 0 L 500 1000 M 800 0 L 800 1000" stroke-opacity="0.1" stroke-width="1"></path>
+                    <path d="M 0 300 L 1000 300 M 0 600 L 1000 600" stroke-opacity="0.1" stroke-width="1"></path>
+                    <rect fill="#D4AF37" fill-opacity="0.05" height="400" stroke="#D4AF37" stroke-opacity="0.2" stroke-width="2" width="400" x="500" y="200"></rect>
+                    <rect fill="#FF5540" fill-opacity="0.05" height="150" stroke="#FF5540" stroke-opacity="0.3" stroke-width="4" width="300" x="150" y="550"></rect>
+                    <path d="M 100 800 L 400 500 L 700 700 L 900 200" stroke="#D4AF37" stroke-opacity="0.6" stroke-width="6"></path>
+                    <path d="M 250 900 L 500 650 L 650 850" stroke="#FF5540" stroke-opacity="0.5" stroke-width="10"></path>
+                    <circle cx="500" cy="500" r="300" stroke-dasharray="15 30" stroke-opacity="0.4" stroke-width="2"></circle>
+                    <text fill="currentColor" font-family="monospace" font-size="28" font-weight="bold" stroke="none" x="350" y="250">def strike(target):</text>
+                    <text fill="currentColor" font-family="monospace" font-size="24" stroke="none" x="400" y="300">    yield precision * power</text>
+                    <text fill="#FF5540" font-family="monospace" font-size="32" font-weight="bold" stroke="none" x="200" y="750">import discipline</text>
+                    <text fill="currentColor" font-family="monospace" font-size="18" stroke="none" x="650" y="850">sys.exit(0)</text>
+                </g>
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/90 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-surface via-transparent to-surface/80"></div>
+        </div>
+
+        <div class="max-w-screen-2xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8">
+                <h2 class="text-[#FF5540] font-bold tracking-widest uppercase mb-4 text-sm code-font border-l-4 border-[#FF5540] pl-3">Jorge Alejandro Bozo Adarme</h2>
+                <h1 class="font-headline font-black text-6xl md:text-8xl lg:text-[9rem] editorial-punch text-on-surface uppercase mb-6 drop-shadow-2xl">
+                    Build <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#FF5540]">Ruthless</span> <br/>
+                    Systems.
+                </h1>
+                <p class="code-font text-on-surface-variant text-lg md:text-xl max-w-2xl mb-10 border-l-4 border-[#FF5540] bg-surface-container-highest/30 p-6">
+                    const discipline = true; <br/>
+                    while (discipline) { execute_backend_code(); } <br/>
+                    <span class="text-primary mt-2 block">// Software Engineer. Designing scalable backend systems with precision and reliability.</span>
+                </p>
+                <div class="flex flex-wrap gap-6">
+                    <a href="#record" class="bg-secondary-container text-on-secondary px-8 py-5 font-headline font-bold uppercase tracking-widest text-sm hover:bg-red-500 transition-colors duration-300 border-2 border-secondary-container hover:border-red-500 shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 block text-center">
+                        Launch Projects
+                    </a>
+                    <a href="#arsenal" class="ghost-border bg-surface/50 backdrop-blur-sm text-primary-container px-8 py-5 font-headline font-bold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-surface transition-colors duration-300 shadow-[4px_4px_0px_0px_rgba(255,85,64,0.3)] block text-center">
+                        View Arsenal
+                    </a>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-4 hidden lg:block">
+                <div class="glass-panel p-8 ghost-border relative overflow-hidden group shadow-[8px_8px_0px_0px_rgba(212,175,55,0.2)]">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF5540]/10 blur-3xl rounded-full"></div>
+                    <div class="absolute -right-4 -top-4 text-9xl font-black text-primary-container opacity-5 select-none">01</div>
+                    <h3 class="font-headline font-bold text-[#FF5540] uppercase tracking-widest text-xs mb-6 border-b-2 border-[#FF5540]/30 pb-2">Current Status</h3>
+                    
+                    <div class="space-y-6 code-font text-sm text-on-surface-variant">
+                        <div class="flex justify-between items-center border-b border-primary-container/10 pb-3">
+                            <span class="uppercase text-xs tracking-wider opacity-70">Role:</span>
+                            <span class="text-on-surface font-bold bg-primary-container/10 px-2 py-1">Backend Engineer</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-primary-container/10 pb-3">
+                            <span class="uppercase text-xs tracking-wider opacity-70">Location:</span>
+                            <span class="text-on-surface font-bold">Maracaibo, VE (Remote)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-primary-container/10 pb-3">
+                            <span class="uppercase text-xs tracking-wider opacity-70">Main Stack:</span>
+                            <span class="text-primary-container font-bold flex items-center gap-2">
+                                <span class="w-2 h-2 bg-[#FF5540] block"></span>
+                                Python / FastAPI
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tatami Section (Profile) -->
+    <section id="tatami" class="py-24 px-6 max-w-screen-2xl mx-auto relative">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-4">
+                <h2 class="font-headline font-black text-5xl md:text-7xl text-[#D4AF37] uppercase editorial-punch">
+                    Mi <br>Perfil
+                </h2>
+                <p class="text-[#FF5540] font-bold tracking-widest mt-4 uppercase text-sm">// Perfil Profesional</p>
+            </div>
+            <div class="lg:col-span-8 glass-panel p-8 md:p-12 ghost-border shadow-[8px_8px_0px_0px_rgba(255,85,64,0.2)]">
+                <p class="text-lg md:text-2xl leading-relaxed text-on-surface font-light">
+                    Ingeniero de Software con sólida formación en desarrollo <span class="text-primary-container font-bold">backend</span> y gestión de sistemas IT. Especialista en la creación de soluciones escalables con <span class="text-[#FF5540] font-bold">Python, FastAPI y PostgreSQL</span>.
+                </p>
+                <p class="mt-6 text-lg md:text-xl leading-relaxed text-on-surface-variant font-light">
+                    Experiencia comprobada en la digitalización de procesos deportivos y soporte técnico crítico. <strong class="text-on-surface">Bilingüe (C1/C2)</strong> con un enfoque riguroso en la resolución de problemas y la optimización de infraestructura, orientado a resultados concretos y de alto impacto.
+                </p>
+                
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 code-font">
+                    <div class="border-l-2 border-[#D4AF37] pl-4">
+                        <span class="text-xs uppercase text-on-surface-variant block mb-1">Educación Principal</span>
+                        <strong class="text-on-surface block text-lg">Ingeniería en Informática</strong>
+                        <span class="text-sm text-on-surface-variant">Universidad Rafael Belloso Chacín | Promedio: 18/20</span>
+                    </div>
+                    <div class="border-l-2 border-[#FF5540] pl-4">
+                        <span class="text-xs uppercase text-on-surface-variant block mb-1">Especialización</span>
+                        <strong class="text-on-surface block text-lg">CS50x: Computer Science</strong>
+                        <span class="text-sm text-on-surface-variant">HarvardX (2024)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certs" class="py-24 px-6 bg-surface-container-low border-y-2 border-primary-container/20 relative overflow-hidden">
+        <div class="max-w-screen-2xl mx-auto">
+
+            <!-- Section Header -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-end">
+                <div class="lg:col-span-5">
+                    <h2 class="font-headline font-black text-5xl md:text-7xl text-on-surface uppercase editorial-punch">
+                        Formación <br><span class="text-[#D4AF37]">Técnica</span>
+                    </h2>
+                    <p class="text-[#FF5540] font-bold tracking-widest mt-4 uppercase text-sm">// Certificaciones FreeCodeCamp</p>
+                </div>
+                <div class="lg:col-span-7 code-font text-on-surface-variant text-sm leading-relaxed border-l-4 border-[#D4AF37]/40 pl-6">
+                    Cada certificación representa conocimiento aplicado: no se obtiene memorizando teoría,
+                    sino construyendo proyectos reales, resolviendo problemas y entregando código funcional.
+                    Más de <span class="text-primary-container font-bold">1,200 horas</span> de formación práctica acumuladas.
+                </div>
+            </div>
+
+            <!-- Certs Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Cert 1: Back End -->
+                <div class="group glass-panel p-8 ghost-border border-t-4 border-t-[#FF5540] hover:shadow-[0_0_40px_rgba(255,85,64,0.15)] transition-all duration-500 flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-[#FF5540]/10 flex items-center justify-center border border-[#FF5540]/30 group-hover:bg-[#FF5540]/20 transition-colors">
+                            <span class="material-symbols-outlined text-[#FF5540] text-2xl">api</span>
+                        </div>
+                        <span class="code-font text-xs text-on-surface-variant bg-surface-variant/40 px-3 py-1 uppercase tracking-widest">Ene 2023</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-on-surface text-xl uppercase mb-1">Back End Development</h3>
+                    <div class="text-[#FF5540] text-xs font-bold uppercase tracking-widest mb-4 code-font">& APIs · FreeCodeCamp</div>
+                    <p class="text-on-surface-variant text-sm leading-relaxed flex-1">
+                        Construcción de servidores de producción con <strong class="text-on-surface">Node.js y Express</strong>, diseño de APIs RESTful robustas con autenticación JWT, y conexión a bases de datos relacionales con <strong class="text-on-surface">MySQL</strong>. Desarrollé 5 proyectos de certificación end-to-end, incluyendo un microservicio de acortamiento de URLs y una API de ejercicios con historial de usuarios.
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-surface-variant/50 flex flex-wrap gap-2 code-font text-xs">
+                        <span class="bg-[#FF5540]/10 text-[#FF5540] px-2 py-1">[Node.js]</span>
+                        <span class="bg-[#FF5540]/10 text-[#FF5540] px-2 py-1">[Express]</span>
+                        <span class="bg-[#FF5540]/10 text-[#FF5540] px-2 py-1">[REST APIs]</span>
+                        <span class="bg-[#FF5540]/10 text-[#FF5540] px-2 py-1">[MySQL]</span>
+                    </div>
+                </div>
+
+                <!-- Cert 2: Front End Libraries -->
+                <div class="group glass-panel p-8 ghost-border border-t-4 border-t-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] transition-all duration-500 flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/20 transition-colors">
+                            <span class="material-symbols-outlined text-[#D4AF37] text-2xl">layers</span>
+                        </div>
+                        <span class="code-font text-xs text-on-surface-variant bg-surface-variant/40 px-3 py-1 uppercase tracking-widest">Ene 2022</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-on-surface text-xl uppercase mb-1">Front End Dev Libraries</h3>
+                    <div class="text-[#D4AF37] text-xs font-bold uppercase tracking-widest mb-4 code-font">FreeCodeCamp</div>
+                    <p class="text-on-surface-variant text-sm leading-relaxed flex-1">
+                        Dominio de las bibliotecas líderes del ecosistema frontend: <strong class="text-on-surface">Bootstrap</strong> para sistemas de diseño rápidos, <strong class="text-on-surface">Sass</strong> para arquitecturas CSS escalables y mantenibles, y los fundamentos de <strong class="text-on-surface">React</strong> y <strong class="text-on-surface">Redux</strong> para gestión de estado reactivo. Proyectos de certificación incluyeron una máquina de frases aleatoria, una calculadora funcional y un reloj Pomodoro.
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-surface-variant/50 flex flex-wrap gap-2 code-font text-xs">
+                        <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[React]</span>
+                        <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[Redux]</span>
+                        <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[Bootstrap]</span>
+                        <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[Sass]</span>
+                    </div>
+                </div>
+
+                <!-- Cert 3: Responsive Web Design -->
+                <div class="group glass-panel p-8 ghost-border border-t-4 border-t-primary-container hover:shadow-[0_0_40px_rgba(242,202,80,0.1)] transition-all duration-500 flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-primary-container/10 flex items-center justify-center border border-primary-container/30 group-hover:bg-primary-container/20 transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-2xl">devices</span>
+                        </div>
+                        <span class="code-font text-xs text-on-surface-variant bg-surface-variant/40 px-3 py-1 uppercase tracking-widest">Jul 2022</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-on-surface text-xl uppercase mb-1">Responsive Web Design</h3>
+                    <div class="text-primary-container text-xs font-bold uppercase tracking-widest mb-4 code-font">FreeCodeCamp</div>
+                    <p class="text-on-surface-variant text-sm leading-relaxed flex-1">
+                        Fundamentos sólidos en <strong class="text-on-surface">HTML5 semántico y CSS3</strong> avanzado: Flexbox, CSS Grid, media queries y principios de accesibilidad (a11y). Diseño de interfaces que se adaptan fluidamente a cualquier dispositivo. 5 proyectos de certificación construidos from scratch, incluyendo una página de documentación técnica y un landing page responsivo.
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-surface-variant/50 flex flex-wrap gap-2 code-font text-xs">
+                        <span class="bg-primary-container/10 text-primary-container px-2 py-1">[HTML5]</span>
+                        <span class="bg-primary-container/10 text-primary-container px-2 py-1">[CSS Grid]</span>
+                        <span class="bg-primary-container/10 text-primary-container px-2 py-1">[Flexbox]</span>
+                        <span class="bg-primary-container/10 text-primary-container px-2 py-1">[a11y]</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FCC Badge Bar -->
+            <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border border-surface-variant/50 px-8 py-5 glass-panel code-font">
+                <div class="flex items-center gap-4">
+                    <span class="w-3 h-3 bg-[#D4AF37] block"></span>
+                    <span class="text-xs uppercase tracking-widest text-on-surface-variant">Institución verificada</span>
+                    <span class="text-on-surface font-bold uppercase text-sm">FreeCodeCamp · freecodecamp.org</span>
+                </div>
+                <div class="flex items-center gap-6 text-xs text-on-surface-variant">
+                    <span class="flex items-center gap-2"><span class="w-2 h-2 bg-[#FF5540] block"></span> 3 Certificaciones</span>
+                    <span class="flex items-center gap-2"><span class="w-2 h-2 bg-[#D4AF37] block"></span> +1,200 hrs</span>
+                    <span class="flex items-center gap-2"><span class="w-2 h-2 bg-primary-container block"></span> 2022–2023</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Arsenal Section (Skills) -->
+    <section id="arsenal" class="py-24 px-6 bg-surface-container-low border-y-2 border-primary-container/20 tatami-pattern relative">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-headline font-black text-5xl md:text-7xl text-on-surface uppercase editorial-punch">
+                    Stack <span class="text-[#FF5540]">Técnico</span>
+                </h2>
+                <p class="text-primary-container font-bold tracking-widest mt-4 uppercase text-sm">// Herramientas &amp; Tecnologías</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 code-font">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 ghost-border hover:border-[#FF5540] transition-colors duration-300">
+                    <div class="text-[#FF5540] mb-4">
+                        <span class="material-symbols-outlined text-5xl">terminal</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-on-surface mb-6 border-b border-surface-variant pb-2 uppercase">Lenguajes</h3>
+                    <ul class="space-y-3 text-on-surface-variant">
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-primary-container"></div> Python (Main)</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> JavaScript (Node.js)</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> SQL / Ruby</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> Java / HTML & CSS</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 ghost-border hover:border-[#D4AF37] transition-colors duration-300">
+                    <div class="text-[#D4AF37] mb-4">
+                        <span class="material-symbols-outlined text-5xl">dns</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-on-surface mb-6 border-b border-surface-variant pb-2 uppercase">Tecnologías</h3>
+                    <ul class="space-y-3 text-on-surface-variant">
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-[#FF5540]"></div> FastAPI</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-[#FF5540]"></div> PostgreSQL / MySQL</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> Docker & Git</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> React & Astro</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 ghost-border hover:border-[#FF5540] transition-colors duration-300">
+                    <div class="text-on-surface mb-4">
+                        <span class="material-symbols-outlined text-5xl">public</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-on-surface mb-6 border-b border-surface-variant pb-2 uppercase">Idiomas & SO</h3>
+                    <ul class="space-y-3 text-on-surface-variant">
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-primary-container"></div> Inglés C2/C1 Proficiente</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-primary-container"></div> Español Nativo</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> Arch Linux</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 bg-surface-variant"></div> Ubuntu Server</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Récord Section (Experience & Projects) -->
+    <section id="record" class="py-24 px-6 max-w-screen-2xl mx-auto relative">
+        <div class="mb-16">
+            <h2 class="font-headline font-black text-5xl md:text-7xl text-[#D4AF37] uppercase editorial-punch">
+                Mi <br><span class="text-on-surface">Trayectoria</span>
+            </h2>
+            <p class="text-on-surface-variant font-bold tracking-widest mt-4 uppercase text-sm border-l-4 border-primary-container pl-3">// Proyectos &amp; Experiencia Laboral</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+            
+            <!-- Experience Column -->
+            <div>
+                <h3 class="text-2xl font-bold uppercase text-[#FF5540] mb-8 flex items-center gap-3 code-font">
+                    <span class="material-symbols-outlined">work</span> Experiencia
+                </h3>
+                
+                <div class="relative pl-8 border-l-2 border-surface-variant space-y-12">
+                    <!-- Exp Item 1 -->
+                    <div class="relative">
+                        <div class="absolute -left-[41px] top-1 w-5 h-5 bg-[#FF5540] rounded-none border-4 border-surface"></div>
+                        <div class="text-sm text-[#FF5540] font-bold mb-1 code-font">2024 - Presente</div>
+                        <h4 class="text-xl font-bold text-on-surface uppercase">IT Support &amp; Infrastructure</h4>
+                        <div class="text-primary-container text-sm font-bold mb-4 uppercase tracking-widest code-font">Tito's Dog Grooming</div>
+                        <ul class="text-on-surface-variant space-y-2 text-sm leading-relaxed border-t border-surface-variant/50 pt-4 code-font">
+                            <li>&gt; Gestión integral de infraestructura técnica y resolución de fallos en sistemas distribuidos.</li>
+                            <li>&gt; Automatización de flujos de trabajo internos mediante scripts en Python.</li>
+                            <li>&gt; Mantenimiento de sistemas con una tasa de satisfacción del cliente del 89%.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Column (compact cards) -->
+            <div>
+                <h3 class="text-2xl font-bold uppercase text-primary-container mb-8 flex items-center gap-3 code-font">
+                    <span class="material-symbols-outlined">folder_special</span> Proyectos
+                </h3>
+                
+                <div class="space-y-6">
+                    <!-- Project 1 -->
+                    <div class="glass-panel p-6 ghost-border border-l-4 border-l-[#D4AF37] hover:bg-surface-container-high transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-on-surface uppercase">Karate Urbe System</h4>
+                            <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1 text-xs font-bold uppercase code-font">2023-Presente</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm mb-4">Desarrollo de un sistema de gestión y visualización de puntuaciones para eventos deportivos universitarios y regionales. Implementación exitosa en federaciones.</p>
+                        <div class="flex gap-2 text-xs code-font text-[#FF5540]">
+                            <span>[Python]</span> <span>[Tkinter]</span> <span>[PyGUI]</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="glass-panel p-6 ghost-border border-l-4 border-l-[#FF5540] hover:bg-surface-container-high transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-on-surface uppercase">Tournament Manager API</h4>
+                            <span class="bg-[#FF5540]/10 text-[#FF5540] px-2 py-1 text-xs font-bold uppercase code-font">Backend</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm mb-4">Diseño de una API RESTful para gestión de torneos de artes marciales. Contenedores Docker para despliegue consistente y CI/CD simplificado.</p>
+                        <div class="flex gap-2 text-xs code-font text-primary-container">
+                            <span>[FastAPI]</span> <span>[PostgreSQL]</span> <span>[Docker]</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="glass-panel p-6 ghost-border border-l-4 border-l-surface-variant hover:bg-surface-container-high transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-on-surface uppercase">Distributed Task Microservice</h4>
+                            <span class="bg-surface-variant/30 text-on-surface px-2 py-1 text-xs font-bold uppercase code-font">Arquitectura</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm mb-4">Microservicio escalable para procesamiento de tareas en segundo plano. Optimización de colas de mensajes para manejo eficiente de datos.</p>
+                        <div class="flex gap-2 text-xs code-font">
+                            <span class="text-on-surface">[Python]</span> <span class="text-on-surface">[Redis]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Featured Projects (with screenshots) -->
+        <div>
+            <h3 class="text-2xl font-bold uppercase text-on-surface mb-2 flex items-center gap-3 code-font">
+                <span class="material-symbols-outlined text-[#FF5540]">deployed_code</span> Proyectos Destacados
+            </h3>
+            <p class="text-on-surface-variant text-xs code-font uppercase tracking-widest mb-10 border-l-4 border-[#FF5540] pl-3">// Open Source · Construido desde cero</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Featured Project: Credit Card Checker -->
+                <div class="group glass-panel ghost-border border-t-4 border-t-[#D4AF37] overflow-hidden hover:shadow-[0_0_50px_rgba(212,175,55,0.12)] transition-all duration-500">
+                    <!-- Screenshot Preview -->
+                    <div class="relative overflow-hidden h-52 bg-[#0d0d1a]">
+                        <img 
+                            src="assets/credit-checker-preview.png" 
+                            alt="Valid Card Checker - C source code showing Luhn algorithm implementation" 
+                            class="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                        />
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/30 to-transparent"></div>
+                        <!-- CS50 badge -->
+                        <div class="absolute top-3 right-3 bg-[#D4AF37]/20 border border-[#D4AF37]/50 backdrop-blur-sm px-3 py-1 code-font text-[#D4AF37] text-xs font-bold uppercase tracking-wider">
+                            CS50 · Harvard
+                        </div>
+                        <!-- Language chip -->
+                        <div class="absolute bottom-3 left-3 flex items-center gap-2 bg-[#0d0d1a]/80 border border-[#D4AF37]/30 px-3 py-1 backdrop-blur-sm">
+                            <span class="w-2 h-2 bg-[#D4AF37] block"></span>
+                            <span class="code-font text-[#D4AF37] text-xs font-bold">C</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-7">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="font-headline font-bold text-on-surface text-xl uppercase">Valid Card Checker</h4>
+                            <a href="https://github.com/code50/109198682/blob/44567433f1deaf0a6eb99392dfd8d002d99c1d9a/credit" 
+                               target="_blank" 
+                               class="flex items-center gap-1 text-xs code-font text-on-surface-variant hover:text-[#D4AF37] transition-colors border border-surface-variant hover:border-[#D4AF37]/50 px-3 py-1">
+                                <span class="material-symbols-outlined text-sm">open_in_new</span> Code
+                            </a>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-5">
+                            Implementación en <strong class="text-on-surface">C puro</strong> del <strong class="text-on-surface">algoritmo de Luhn</strong> para validar y clasificar tarjetas de crédito (VISA, AMEX, Mastercard). Desarrollado como proyecto de certificación de <strong class="text-[#D4AF37]">CS50x de Harvard</strong>. El programa valida el checksum matemático de cualquier número de tarjeta e identifica su emisor con O(n) de complejidad.
+                        </p>
+                        <div class="flex flex-wrap gap-2 code-font text-xs">
+                            <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[C]</span>
+                            <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[Luhn Algorithm]</span>
+                            <span class="bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-1">[CS50]</span>
+                            <span class="bg-surface-variant/30 text-on-surface-variant px-2 py-1">[Low-Level]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Project: Minecraft Autoclicker -->
+                <div class="group glass-panel ghost-border border-t-4 border-t-[#a855f7] overflow-hidden hover:shadow-[0_0_50px_rgba(168,85,247,0.12)] transition-all duration-500">
+                    <!-- Screenshot Preview -->
+                    <div class="relative overflow-hidden h-52 bg-[#0d0d1a]">
+                        <img 
+                            src="assets/autoclicker-preview.png" 
+                            alt="HopeClicker - Terminal UI showing Minecraft autoclicker with CPS controls" 
+                            class="w-full h-full object-cover object-center opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                        />
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/20 to-transparent"></div>
+                        <!-- Status badge -->
+                        <div class="absolute top-3 right-3 flex items-center gap-2 bg-[#a855f7]/20 border border-[#a855f7]/50 backdrop-blur-sm px-3 py-1">
+                            <span class="w-1.5 h-1.5 bg-[#a855f7] block animate-pulse"></span>
+                            <span class="code-font text-[#a855f7] text-xs font-bold uppercase tracking-wider">ENABLED</span>
+                        </div>
+                        <!-- Language chip -->
+                        <div class="absolute bottom-3 left-3 flex items-center gap-2 bg-[#0d0d1a]/80 border border-[#a855f7]/30 px-3 py-1 backdrop-blur-sm">
+                            <span class="w-2 h-2 bg-[#a855f7] block"></span>
+                            <span class="code-font text-[#a855f7] text-xs font-bold">Bash</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-7">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="font-headline font-bold text-on-surface text-xl uppercase">Minecraft Autoclicker</h4>
+                            <a href="https://github.com/Sickenings/Projects/tree/main/HopeClicker" 
+                               target="_blank" 
+                               class="flex items-center gap-1 text-xs code-font text-on-surface-variant hover:text-[#a855f7] transition-colors border border-surface-variant hover:border-[#a855f7]/50 px-3 py-1">
+                                <span class="material-symbols-outlined text-sm">open_in_new</span> GitHub
+                            </a>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-5">
+                            Autoclicker indetectable en <strong class="text-on-surface">Bash</strong> para Lunar Client y cualquier launcher de Minecraft. Interfaz TUI interactiva con control de <strong class="text-on-surface">CPS min/max</strong>, jitter effect para humanización del click, y randomización de timing para evadir sistemas anti-cheat. Configuración en tiempo real sin reiniciar el proceso.
+                        </p>
+                        <div class="flex flex-wrap gap-2 code-font text-xs">
+                            <span class="bg-[#a855f7]/10 text-[#a855f7] px-2 py-1">[Bash]</span>
+                            <span class="bg-[#a855f7]/10 text-[#a855f7] px-2 py-1">[TUI / ncurses]</span>
+                            <span class="bg-[#a855f7]/10 text-[#a855f7] px-2 py-1">[xdotool]</span>
+                            <span class="bg-surface-variant/30 text-on-surface-variant px-2 py-1">[Linux]</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-32 px-6 bg-[#111] border-t-2 border-primary-container/20 tatami-pattern text-center relative">
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="font-headline font-black text-6xl md:text-8xl text-on-surface uppercase editorial-punch mb-6">
+                Hablemos <br><span class="text-[#FF5540]">.</span>
+            </h2>
+            <p class="text-lg text-on-surface-variant code-font mb-12">
+                Disponible para roles como Junior/Entry-Level Backend Developer en remoto.
+            </p>
+            
+            <a href="mailto:jorgealebozo@gmail.com" class="inline-block bg-primary-container text-surface px-12 py-6 font-headline font-black uppercase tracking-[0.2em] text-xl hover:bg-[#FF5540] hover:text-white transition-colors duration-300 shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2">
+                ENVIAR MENSAJE
+            </a>
+
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 code-font text-sm">
+                <div class="border border-surface-variant p-4 glass-panel">
+                    <span class="block text-primary-container mb-1 uppercase">Email</span>
+                    <a href="mailto:jorgealebozo@gmail.com" class="text-on-surface hover:text-[#FF5540]">jorgealebozo@gmail.com</a>
+                </div>
+                <div class="border border-surface-variant p-4 glass-panel">
+                    <span class="block text-primary-container mb-1 uppercase">Ubicación</span>
+                    <span class="text-on-surface">Maracaibo, Venezuela</span>
+                </div>
+                <div class="border border-surface-variant p-4 glass-panel">
+                    <span class="block text-primary-container mb-1 uppercase">Teléfono</span>
+                    <span class="text-on-surface">+58 412 654 6060</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Shared Component -->
+    <footer class="bg-[#0a0a0a] border-t-2 border-[#FF5540]/30 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 gap-6 max-w-screen-2xl mx-auto">
+            <div class="text-[#D4AF37] font-bold font-['Space_Grotesk'] text-xl uppercase tracking-tighter flex items-center gap-2">
+                <span class="w-4 h-4 bg-[#FF5540] block"></span>
+                CÓDIGO Y DISCIPLINA
+            </div>
+            <div class="font-['Space_Grotesk'] font-medium uppercase tracking-widest text-[10px] text-[#D4AF37] bg-primary-container/10 px-4 py-2 border border-primary-container/30">
+                © 2024 JORGE BOZO. ENGINEERED WITH DISCIPLINE.
+            </div>
+            <div class="flex gap-8">
+                <a class="text-[#e5e2e1] border border-transparent hover:border-[#FF5540] px-2 py-1 font-['Space_Grotesk'] font-bold uppercase tracking-widest text-[10px] hover:text-[#FF5540] transition-colors duration-300" href="https://github.com/jorgebozo" target="_blank">GITHUB</a>
+                <a class="text-[#e5e2e1] border border-transparent hover:border-[#FF5540] px-2 py-1 font-['Space_Grotesk'] font-bold uppercase tracking-widest text-[10px] hover:text-[#FF5540] transition-colors duration-300" href="#">LINKEDIN</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+<script>
+// ═══════════════════════════════════════════════
+//  BILINGUAL ENGINE — Jorge Bozo Portfolio
+// ═══════════════════════════════════════════════
+const i18n = {
+  es: {
+    // NAV
+    'nav-tatami':   'Tatami',
+    'nav-arsenal':  'Arsenal',
+    'nav-record':   'Récord',
+    'nav-contact':  'Contacto',
+    'nav-cta':      'CONTACT ME',
+    // HERO
+    'hero-subtitle': '// Software Engineer. Diseñando sistemas backend escalables con precisión y confiabilidad.',
+    'hero-btn1':    'Ver Proyectos',
+    'hero-btn2':    'Ver Stack',
+    // TATAMI
+    'tatami-h2':    'Mi <br>Perfil',
+    'tatami-sub':   '// Perfil Profesional',
+    'tatami-p1':    'Ingeniero de Software con sólida formación en desarrollo <span class="text-primary-container font-bold">backend</span> y gestión de sistemas IT. Especialista en la creación de soluciones escalables con <span class="text-[#FF5540] font-bold">Python, FastAPI y PostgreSQL</span>.',
+    'tatami-p2':    'Experiencia comprobada en la digitalización de procesos deportivos y soporte técnico crítico. <strong class="text-on-surface">Bilingüe (C1/C2)</strong> con un enfoque riguroso en la resolución de problemas y la optimización de infraestructura, orientado a resultados concretos y de alto impacto.',
+    'edu-label1':   'Educación Principal',
+    'edu-label2':   'Especialización',
+    // CERTS
+    'certs-h2':     'Formación <br><span class="text-[#D4AF37]">Técnica</span>',
+    'certs-sub':    '// Certificaciones FreeCodeCamp',
+    'certs-desc':   'Cada certificación representa conocimiento aplicado: no se obtiene memorizando teoría, sino construyendo proyectos reales, resolviendo problemas y entregando código funcional. Más de <span class="text-primary-container font-bold">1,200 horas</span> de formación práctica acumuladas.',
+    'cert1-date':   'Ene 2023',
+    'cert1-desc':   'Construcción de servidores de producción con <strong class="text-on-surface">Node.js y Express</strong>, diseño de APIs RESTful robustas con autenticación JWT, y conexión a bases de datos relacionales con <strong class="text-on-surface">MySQL</strong>. Desarrollé 5 proyectos de certificación end-to-end, incluyendo un microservicio de acortamiento de URLs y una API de ejercicios con historial de usuarios.',
+    'cert2-date':   'Ene 2022',
+    'cert2-desc':   'Dominio de las bibliotecas líderes del ecosistema frontend: <strong class="text-on-surface">Bootstrap</strong> para sistemas de diseño rápidos, <strong class="text-on-surface">Sass</strong> para arquitecturas CSS escalables y mantenibles, y los fundamentos de <strong class="text-on-surface">React</strong> y <strong class="text-on-surface">Redux</strong> para gestión de estado reactivo. Proyectos de certificación incluyeron una máquina de frases aleatoria, una calculadora funcional y un reloj Pomodoro.',
+    'cert3-date':   'Jul 2022',
+    'cert3-desc':   'Fundamentos sólidos en <strong class="text-on-surface">HTML5 semántico y CSS3</strong> avanzado: Flexbox, CSS Grid, media queries y principios de accesibilidad (a11y). Diseño de interfaces que se adaptan fluidamente a cualquier dispositivo. 5 proyectos de certificación construidos from scratch, incluyendo una página de documentación técnica y un landing page responsivo.',
+    'fcc-verified': 'Institución verificada',
+    'fcc-certs':    '3 Certificaciones',
+    // ARSENAL
+    'arsenal-h2':   'Stack <span class="text-[#FF5540]">Técnico</span>',
+    'arsenal-sub':  '// Herramientas &amp; Tecnologías',
+    'arsenal-c1':   'Lenguajes',
+    'arsenal-c2':   'Tecnologías',
+    'arsenal-c3':   'Idiomas &amp; SO',
+    'arsenal-lang1':'Inglés C2/C1 Proficiente',
+    'arsenal-lang2':'Español Nativo',
+    // RECORD
+    'record-h2':    'Mi <br><span class="text-on-surface">Trayectoria</span>',
+    'record-sub':   '// Proyectos &amp; Experiencia Laboral',
+    'record-exp':   '<span class="material-symbols-outlined">work</span> Experiencia',
+    'exp-date':     '2024 - Presente',
+    'exp-bullet1':  '&gt; Gestión integral de infraestructura técnica y resolución de fallos en sistemas distribuidos.',
+    'exp-bullet2':  '&gt; Automatización de flujos de trabajo internos mediante scripts en Python.',
+    'exp-bullet3':  '&gt; Mantenimiento de sistemas con una tasa de satisfacción del cliente del 89%.',
+    'record-proj':  '<span class="material-symbols-outlined">folder_special</span> Proyectos',
+    'proj1-desc':   'Desarrollo de un sistema de gestión y visualización de puntuaciones para eventos deportivos universitarios y regionales. Implementación exitosa en federaciones.',
+    'proj2-desc':   'Diseño de una API RESTful para gestión de torneos de artes marciales. Contenedores Docker para despliegue consistente y CI/CD simplificado.',
+    'proj3-desc':   'Microservicio escalable para procesamiento de tareas en segundo plano. Optimización de colas de mensajes para manejo eficiente de datos.',
+    'featured-h':   '<span class="material-symbols-outlined text-[#FF5540]">deployed_code</span> Proyectos Destacados',
+    'featured-sub': '// Open Source · Construido desde cero',
+    'credit-desc':  'Implementación en <strong class="text-on-surface">C puro</strong> del <strong class="text-on-surface">algoritmo de Luhn</strong> para validar y clasificar tarjetas de crédito (VISA, AMEX, Mastercard). Desarrollado como proyecto de certificación de <strong class="text-[#D4AF37]">CS50x de Harvard</strong>. El programa valida el checksum matemático de cualquier número de tarjeta e identifica su emisor con O(n) de complejidad.',
+    'click-desc':   'Autoclicker indetectable en <strong class="text-on-surface">Bash</strong> para Lunar Client y cualquier launcher de Minecraft. Interfaz TUI interactiva con control de <strong class="text-on-surface">CPS min/max</strong>, jitter effect para humanización del click, y randomización de timing para evadir sistemas anti-cheat. Configuración en tiempo real sin reiniciar el proceso.',
+    // CONTACT
+    'contact-h2':   'Hablemos <br><span class="text-[#FF5540]">.</span>',
+    'contact-p':    'Disponible para roles como Junior/Entry-Level Backend Developer en remoto.',
+    'contact-btn':  'ENVIAR MENSAJE',
+    'contact-loc':  'Ubicación',
+    'contact-tel':  'Teléfono',
+    // FOOTER
+    'footer-tag':   'CÓDIGO Y DISCIPLINA',
+    'footer-copy':  '© 2024 JORGE BOZO. ENGINEERED WITH DISCIPLINE.',
+  },
+  en: {
+    // NAV
+    'nav-tatami':   'Profile',
+    'nav-arsenal':  'Arsenal',
+    'nav-record':   'Record',
+    'nav-contact':  'Contact',
+    'nav-cta':      'CONTACT ME',
+    // HERO
+    'hero-subtitle': '// Software Engineer. Designing scalable backend systems with precision and reliability.',
+    'hero-btn1':    'View Projects',
+    'hero-btn2':    'View Stack',
+    // TATAMI
+    'tatami-h2':    'My <br>Profile',
+    'tatami-sub':   '// Professional Profile',
+    'tatami-p1':    'Software Engineer with a strong background in <span class="text-primary-container font-bold">backend</span> development and IT systems management. Specialist in building scalable solutions with <span class="text-[#FF5540] font-bold">Python, FastAPI, and PostgreSQL</span>.',
+    'tatami-p2':    'Proven experience digitizing sports management processes and providing critical technical support. <strong class="text-on-surface">Bilingual (C1/C2)</strong> with a rigorous focus on problem-solving and infrastructure optimization, driven by measurable results and real impact.',
+    'edu-label1':   'Main Education',
+    'edu-label2':   'Specialization',
+    // CERTS
+    'certs-h2':     'Technical <br><span class="text-[#D4AF37]">Training</span>',
+    'certs-sub':    '// FreeCodeCamp Certifications',
+    'certs-desc':   'Every certification represents applied knowledge: earned not by memorizing theory, but by building real projects, solving real problems, and shipping functional code. Over <span class="text-primary-container font-bold">1,200 hours</span> of hands-on training.',
+    'cert1-date':   'Jan 2023',
+    'cert1-desc':   'Built production-grade servers with <strong class="text-on-surface">Node.js and Express</strong>, designed robust RESTful APIs with JWT authentication, and connected applications to relational databases using <strong class="text-on-surface">MySQL</strong>. Completed 5 end-to-end certification projects, including a URL shortener microservice and an exercise tracker API with user history.',
+    'cert2-date':   'Jan 2022',
+    'cert2-desc':   'Mastered the leading libraries of the frontend ecosystem: <strong class="text-on-surface">Bootstrap</strong> for rapid design systems, <strong class="text-on-surface">Sass</strong> for scalable and maintainable CSS architectures, and the fundamentals of <strong class="text-on-surface">React</strong> and <strong class="text-on-surface">Redux</strong> for reactive state management. Certification projects included a random quote machine, a functional calculator, and a Pomodoro clock.',
+    'cert3-date':   'Jul 2022',
+    'cert3-desc':   'Solid foundations in advanced <strong class="text-on-surface">semantic HTML5 and CSS3</strong>: Flexbox, CSS Grid, media queries, and accessibility principles (a11y). Designed interfaces that adapt fluidly to any device. Built 5 certification projects from scratch, including a technical documentation page and a responsive landing page.',
+    'fcc-verified': 'Verified Institution',
+    'fcc-certs':    '3 Certifications',
+    // ARSENAL
+    'arsenal-h2':   'Technical <span class="text-[#FF5540]">Stack</span>',
+    'arsenal-sub':  '// Tools &amp; Technologies',
+    'arsenal-c1':   'Languages',
+    'arsenal-c2':   'Technologies',
+    'arsenal-c3':   'Languages &amp; OS',
+    'arsenal-lang1':'English C2/C1 Proficient',
+    'arsenal-lang2':'Native Spanish',
+    // RECORD
+    'record-h2':    'My <br><span class="text-on-surface">Track Record</span>',
+    'record-sub':   '// Projects &amp; Work Experience',
+    'record-exp':   '<span class="material-symbols-outlined">work</span> Experience',
+    'exp-date':     '2024 - Present',
+    'exp-bullet1':  '&gt; Full management of technical infrastructure and fault resolution in distributed systems.',
+    'exp-bullet2':  '&gt; Automation of internal workflows via Python scripts.',
+    'exp-bullet3':  '&gt; System maintenance with an 89% customer satisfaction rate.',
+    'record-proj':  '<span class="material-symbols-outlined">folder_special</span> Projects',
+    'proj1-desc':   'Development of a score management and visualization system for university and regional sports events. Successfully deployed with martial arts federations.',
+    'proj2-desc':   'RESTful API design for martial arts tournament management. Docker containers for consistent deployment and simplified CI/CD.',
+    'proj3-desc':   'Scalable microservice for background task processing. Message queue optimization for efficient data handling.',
+    'featured-h':   '<span class="material-symbols-outlined text-[#FF5540]">deployed_code</span> Featured Projects',
+    'featured-sub': '// Open Source · Built From Scratch',
+    'credit-desc':  'Pure <strong class="text-on-surface">C implementation</strong> of the <strong class="text-on-surface">Luhn algorithm</strong> to validate and classify credit cards (VISA, AMEX, Mastercard). Built as a certification project for <strong class="text-[#D4AF37]">Harvard\'s CS50x</strong>. Validates the mathematical checksum of any card number and identifies its issuer in O(n) complexity.',
+    'click-desc':   'Undetectable autoclicker in <strong class="text-on-surface">Bash</strong> for Lunar Client and any Minecraft launcher. Interactive TUI interface with <strong class="text-on-surface">min/max CPS</strong> control, jitter effect for click humanization, and timing randomization to bypass anti-cheat systems. Real-time configuration without restarting the process.',
+    // CONTACT
+    'contact-h2':   'Let\'s <br><span class="text-[#FF5540]">Talk</span>',
+    'contact-p':    'Available for Junior/Entry-Level Backend Developer roles, fully remote.',
+    'contact-btn':  'SEND MESSAGE',
+    'contact-loc':  'Location',
+    'contact-tel':  'Phone',
+    // FOOTER
+    'footer-tag':   'CODE AND DISCIPLINE',
+    'footer-copy':  '© 2024 JORGE BOZO. ENGINEERED WITH DISCIPLINE.',
+  }
+};
+
+// ── Selector map: i18n key → DOM element ──────────────────────────
+function buildMap() {
+  const s = document.querySelector.bind(document);
+  const a = document.querySelectorAll.bind(document);
+  return [
+    // NAV
+    ['nav-tatami',   s('#nav-tatami')],
+    ['nav-arsenal',  s('#nav-arsenal')],
+    ['nav-record',   s('#nav-record')],
+    ['nav-contact',  s('#nav-contact')],
+    ['nav-cta',      s('#nav-cta')],
+    // HERO
+    ['hero-subtitle', s('.text-primary.mt-2.block')],
+    ['hero-btn1',    s('a[href="#record"].bg-secondary-container')],
+    ['hero-btn2',    s('a[href="#arsenal"].ghost-border')],
+    // TATAMI
+    ['tatami-h2',    s('#tatami h2')],
+    ['tatami-sub',   s('#tatami .lg\\:col-span-4 p')],
+    ['tatami-p1',    s('#tatami .glass-panel > p:first-of-type')],
+    ['tatami-p2',    s('#tatami .glass-panel > p:nth-of-type(2)')],
+    ['edu-label1',   a('#tatami .border-l-2')[0]?.querySelector('span:first-child')],
+    ['edu-label2',   a('#tatami .border-l-2')[1]?.querySelector('span:first-child')],
+    // CERTS
+    ['certs-h2',     s('#certs h2')],
+    ['certs-sub',    s('#certs .lg\\:col-span-5 p')],
+    ['certs-desc',   s('#certs .lg\\:col-span-7')],
+    ['cert1-date',   a('#certs .code-font.text-xs.text-on-surface-variant')[0]],
+    ['cert1-desc',   a('#certs p.text-on-surface-variant.text-sm.leading-relaxed')[0]],
+    ['cert2-date',   a('#certs .code-font.text-xs.text-on-surface-variant')[1]],
+    ['cert2-desc',   a('#certs p.text-on-surface-variant.text-sm.leading-relaxed')[1]],
+    ['cert3-date',   a('#certs .code-font.text-xs.text-on-surface-variant')[2]],
+    ['cert3-desc',   a('#certs p.text-on-surface-variant.text-sm.leading-relaxed')[2]],
+    ['fcc-verified', s('#certs .text-xs.uppercase.tracking-widest.text-on-surface-variant')],
+    ['fcc-certs',    s('#certs .flex.items-center.gap-2 span:not([class*="bg"])')],
+    // ARSENAL
+    ['arsenal-h2',   s('#arsenal h2')],
+    ['arsenal-sub',  s('#arsenal .text-primary-container.font-bold.tracking-widest')],
+    ['arsenal-c1',   a('#arsenal h3')[0]],
+    ['arsenal-c2',   a('#arsenal h3')[1]],
+    ['arsenal-c3',   a('#arsenal h3')[2]],
+    ['arsenal-lang1',a('#arsenal li')[4]?.childNodes[1]],
+    ['arsenal-lang2',a('#arsenal li')[5]?.childNodes[1]],
+    // RECORD
+    ['record-h2',    s('#record h2')],
+    ['record-sub',   s('#record .mb-16 p')],
+    ['record-exp',   s('#record h3:first-of-type')],
+    ['exp-date',     s('#record .text-sm.text-\\[\\#FF5540\\].font-bold.mb-1')],
+    ['exp-bullet1',  a('#record ul li')[0]],
+    ['exp-bullet2',  a('#record ul li')[1]],
+    ['exp-bullet3',  a('#record ul li')[2]],
+    ['record-proj',  a('#record h3')[1]],
+    ['proj1-desc',   a('#record .glass-panel p.text-on-surface-variant')[0]],
+    ['proj2-desc',   a('#record .glass-panel p.text-on-surface-variant')[1]],
+    ['proj3-desc',   a('#record .glass-panel p.text-on-surface-variant')[2]],
+    ['featured-h',   a('#record h3')[2]],
+    ['featured-sub', s('#record .border-l-4.border-\\[\\#FF5540\\].pl-3')],
+    ['credit-desc',  a('#record .p-7 p')[0]],
+    ['click-desc',   a('#record .p-7 p')[1]],
+    // CONTACT
+    ['contact-h2',   s('#contacto h2')],
+    ['contact-p',    s('#contacto p.text-lg')],
+    ['contact-btn',  s('#contacto a[href^="mailto"].inline-block')],
+    ['contact-loc',  a('#contacto .text-primary-container.uppercase')[1]],
+    ['contact-tel',  a('#contacto .text-primary-container.uppercase')[2]],
+    // FOOTER
+    ['footer-tag',   s('footer .text-\\[\\#D4AF37\\].font-bold')],
+    ['footer-copy',  s('footer .font-medium.uppercase')],
+  ];
+}
+
+// ── Apply language ────────────────────────────────────────────────
+let currentLang = localStorage.getItem('pf-lang') || 'es';
+
+function applyLang(lang) {
+  const dict = i18n[lang];
+  buildMap().forEach(([key, el]) => {
+    if (!el || !dict[key]) return;
+    // Text nodes (not full elements)
+    if (el.nodeType === Node.TEXT_NODE) {
+      el.textContent = ' ' + dict[key];
+    } else {
+      el.innerHTML = dict[key];
+    }
+  });
+  // Footer tagline includes the square icon, preserve it
+  const footerTag = document.querySelector('footer .text-\\[\\#D4AF37\\].font-bold');
+  if (footerTag) {
+    const square = footerTag.querySelector('span');
+    footerTag.innerHTML = '';
+    if (square) footerTag.appendChild(square);
+    footerTag.appendChild(document.createTextNode(' ' + dict['footer-tag']));
+  }
+  // Update html lang attr
+  document.documentElement.lang = lang;
+  // Update button UI
+  document.getElementById('lang-flag').textContent  = lang === 'es' ? '🇻🇪' : '🇬🇧';
+  document.getElementById('lang-label').textContent = lang === 'es' ? 'ES' : 'EN';
+  localStorage.setItem('pf-lang', lang);
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  applyLang(currentLang);
+}
+
+// Apply saved preference on load
+document.addEventListener('DOMContentLoaded', () => {
+  if (currentLang !== 'es') applyLang(currentLang);
+});
+</script>
+</html>
