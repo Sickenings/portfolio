@@ -451,38 +451,16 @@
         </div>
     </section>
 
-    <!-- Récord Section (Experience & Projects) -->
+    <!-- Récord Section (Projects) -->
     <section id="record" class="py-24 px-6 max-w-screen-2xl mx-auto relative">
         <div class="mb-16">
             <h2 class="font-headline font-black text-5xl md:text-7xl text-[#D4AF37] uppercase editorial-punch">
                 Mi <br><span class="text-on-surface">Trayectoria</span>
             </h2>
-            <p class="text-on-surface-variant font-bold tracking-widest mt-4 uppercase text-sm border-l-4 border-primary-container pl-3">// Proyectos &amp; Experiencia Laboral</p>
+            <p class="text-on-surface-variant font-bold tracking-widest mt-4 uppercase text-sm border-l-4 border-primary-container pl-3">// Proyectos Destacados</p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-            
-            <!-- Experience Column -->
-            <div>
-                <h3 class="text-2xl font-bold uppercase text-[#FF5540] mb-8 flex items-center gap-3 code-font">
-                    <span class="material-symbols-outlined">work</span> Experiencia
-                </h3>
-                
-                <div class="relative pl-8 border-l-2 border-surface-variant space-y-12">
-                    <!-- Exp Item 1 -->
-                    <div class="relative">
-                        <div class="absolute -left-[41px] top-1 w-5 h-5 bg-[#FF5540] rounded-none border-4 border-surface"></div>
-                        <div class="text-sm text-[#FF5540] font-bold mb-1 code-font">2024 - Presente</div>
-                        <h4 class="text-xl font-bold text-on-surface uppercase">IT Support &amp; Infrastructure</h4>
-                        <div class="text-primary-container text-sm font-bold mb-4 uppercase tracking-widest code-font">Tito's Dog Grooming</div>
-                        <ul class="text-on-surface-variant space-y-2 text-sm leading-relaxed border-t border-surface-variant/50 pt-4 code-font">
-                            <li>&gt; Gestión integral de infraestructura técnica y resolución de fallos en sistemas distribuidos.</li>
-                            <li>&gt; Automatización de flujos de trabajo internos mediante scripts en Python.</li>
-                            <li>&gt; Mantenimiento de sistemas con una tasa de satisfacción del cliente del 89%.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="mb-20">
 
             <!-- Projects Column (compact cards) -->
             <div>
@@ -490,7 +468,7 @@
                     <span class="material-symbols-outlined">folder_special</span> Proyectos
                 </h3>
                 
-                <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Project 1 -->
                     <div class="glass-panel p-6 ghost-border border-l-4 border-l-[#D4AF37] hover:bg-surface-container-high transition-colors">
                         <div class="flex justify-between items-start mb-2">
@@ -728,12 +706,6 @@ const i18n = {
     'arsenal-lang2':'Español Nativo',
     // RECORD
     'record-h2':    'Mi <br><span class="text-on-surface">Trayectoria</span>',
-    'record-sub':   '// Proyectos &amp; Experiencia Laboral',
-    'record-exp':   '<span class="material-symbols-outlined">work</span> Experiencia',
-    'exp-date':     '2024 - Presente',
-    'exp-bullet1':  '&gt; Gestión integral de infraestructura técnica y resolución de fallos en sistemas distribuidos.',
-    'exp-bullet2':  '&gt; Automatización de flujos de trabajo internos mediante scripts en Python.',
-    'exp-bullet3':  '&gt; Mantenimiento de sistemas con una tasa de satisfacción del cliente del 89%.',
     'record-proj':  '<span class="material-symbols-outlined">folder_special</span> Proyectos',
     'proj1-desc':   'Desarrollo de un sistema de gestión y visualización de puntuaciones para eventos deportivos universitarios y regionales. Implementación exitosa en federaciones.',
     'proj2-desc':   'Diseño de una API RESTful para gestión de torneos de artes marciales. Contenedores Docker para despliegue consistente y CI/CD simplificado.',
@@ -792,12 +764,7 @@ const i18n = {
     'arsenal-lang2':'Native Spanish',
     // RECORD
     'record-h2':    'My <br><span class="text-on-surface">Track Record</span>',
-    'record-sub':   '// Projects &amp; Work Experience',
-    'record-exp':   '<span class="material-symbols-outlined">work</span> Experience',
-    'exp-date':     '2024 - Present',
-    'exp-bullet1':  '&gt; Full management of technical infrastructure and fault resolution in distributed systems.',
-    'exp-bullet2':  '&gt; Automation of internal workflows via Python scripts.',
-    'exp-bullet3':  '&gt; System maintenance with an 89% customer satisfaction rate.',
+    'record-sub':   '// Projects',
     'record-proj':  '<span class="material-symbols-outlined">folder_special</span> Projects',
     'proj1-desc':   'Development of a score management and visualization system for university and regional sports events. Successfully deployed with martial arts federations.',
     'proj2-desc':   'RESTful API design for martial arts tournament management. Docker containers for consistent deployment and simplified CI/CD.',
@@ -863,11 +830,7 @@ function buildMap() {
     // RECORD
     ['record-h2',    s('#record h2')],
     ['record-sub',   s('#record .mb-16 p')],
-    ['record-exp',   s('#record h3:first-of-type')],
-    ['exp-date',     s('#record .text-sm.text-\\[\\#FF5540\\].font-bold.mb-1')],
-    ['exp-bullet1',  a('#record ul li')[0]],
-    ['exp-bullet2',  a('#record ul li')[1]],
-    ['exp-bullet3',  a('#record ul li')[2]],
+
     ['record-proj',  a('#record h3')[1]],
     ['proj1-desc',   a('#record .glass-panel p.text-on-surface-variant')[0]],
     ['proj2-desc',   a('#record .glass-panel p.text-on-surface-variant')[1]],
